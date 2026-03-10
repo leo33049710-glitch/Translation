@@ -18,14 +18,19 @@ zh_ko_dict = {
     "愛": "사랑"
 }
 
+
+
+
+# homepage process
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/ask.html', methods=['GET', 'POST'])
+
+@app.route('/ask', methods=['GET', 'POST'])
 def ask():
     if request.method == 'POST':
-        # 2. 讀取學生的問題
+        # 2. 讀取學生的問題###^#@#Q%#@
         question = request.form.get('question', '').strip()
         # 3. 查詢題庫的對應答案
         answer = zh_ko_dict.get(question, "抱歉，我目前沒有這個詞的韓文對應。")
@@ -35,5 +40,35 @@ def ask():
     return render_template('ask.html', question="", answer="")
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/gpt', methods=['GET', 'POST'])
+def gpt():
+    if request.method == 'POST':
+        # 2. 讀取學生的問題
+        question = request.form.get('question', '').strip()
+        # 3. 查詢題庫的對應答案
+        answer = zh_ko_dict.get(question, "抱歉，我目前沒有這個詞的韓文對應。")
+        # 4. 回傳答案給學生
+        return render_template('gpt.html', question=question, answer=answer)
+    # GET 時給空白欄位
+    return render_template('gpt.html', question="", answer="")
+
+
+
 if __name__ == '__main__':
-    app.run(debug=False)  # 不觸發 reloader
+    # 開發用；部署用 gunicorn（見下方）
+    app.run(host='0.0.0.0', debug=False)
+
